@@ -80,7 +80,7 @@ class Song
         freq = 0
       end      
       (0.0..duration.to_f).step(1.0/Wav::SAMPLE_RATE) do |i|
-        x = (send(adsr.to_sym,i)*volume * Math.sin(2 * Math::PI * freq * i)).to_i
+        x = (send(adsr.to_sym,i) * volume * Math.sin(2 * Math::PI * freq * i)).to_i
         stream << [x,x]
       end  
       return stream           
