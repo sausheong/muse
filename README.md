@@ -4,15 +4,15 @@ Muse is a Ruby DSL for making music. Unlike MIDI, which is a specification for m
 
 WARNING: This is pre-alpha software where bugs abound and snap and gnash at every mistake you make. Use at your own risk!
 
+Just to push the point that this is pre-alpha software, I haven't created the Muse gem yet, and I don't have any version number for Muse yet either. I crunched this out amidst other work in bits and pieces in slightly over a week. If you are keen on music and Ruby, and would like to help out, I'm more than glad to accept more developers! Or musicians. Or both.
+
 ## Installing
 
-You need to install [bindata][http://bindata.rubyforge.org] first.
+You need to install [bindata](http://bindata.rubyforge.org) first.
 
     gem install bindata
 
-Just to push the point that this is pre-alpha software, I haven't created the Muse gem yet, and I don't have any version number for Muse yet either. 
-
-For now to use Muse, download the files, write your songs in the songs folder with:
+To use Muse, download the files, write your songs in the songs folder with:
 
     require '../muse'
 
