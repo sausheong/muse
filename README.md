@@ -2,9 +2,19 @@
 
 Muse is a Ruby DSL for making music. Unlike MIDI, which is a specification for music in a digital form, Muse actually creates the WAV music files itself.
 
+WARNING: This is pre-alpha software where bugs abound and snap and gnash at every mistake you make. Use at your own risk!
+
 ## Installing
 
-I haven't created the gem yet, for now to use Muse, download the files, then require 'muse'. 
+You need to install [bindata][http://bindata.rubyforge.org] first.
+
+    gem install bindata
+
+Just to push the point that this is pre-alpha software, I haven't created the Muse gem yet, and I don't have any version number for Muse yet either. 
+
+For now to use Muse, download the files, write your songs in the songs folder with:
+
+    require '../muse'
 
 ## Using Muse
 
