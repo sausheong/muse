@@ -6,6 +6,14 @@ WARNING: This is pre-alpha software where bugs abound and snap and gnash at ever
 
 Just to push the point that this is pre-alpha software, I haven't created the Muse gem yet, and I don't have any version number for Muse yet either. I crunched this out amidst other work in bits and pieces in slightly over a week. If you are keen on music and Ruby, and would like to help out, I'm more than glad to accept more developers! Or musicians. Or both.
 
+## The idea
+
+While Muse can certainly be used to write (or recreate) songs from sheet music (you need to manually transcribe it though), it's probably more interesting and useful for dynamically generating songs.
+
+The idea I had in my head when I started writing Muse is to be able to slurp in data and convert it into music. For example, how would your tweets sound like? If you grab your tweet stream and convert (how you do it is up to you, a Muse score is just a Ruby script after all) it into a piece of music how would it sound like? Or your emails? Or your holiday pictures?
+
+Yes, I know the examples in my songs folder are all existing songs.
+
 ## Installing
 
 You need to install [bindata](http://bindata.rubyforge.org) first.
