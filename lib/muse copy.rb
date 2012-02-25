@@ -16,7 +16,7 @@ class Song
   end
 
   class Bar
-    attr :bpm, :beats, :adsr
+    attr :bpm, :beats, :octave, :adsr
     attr_accessor :stream
     
     NOTES = %w(_ a ais b c cis d dis e f fis g gis)
@@ -36,6 +36,7 @@ class Song
     def initialize(id, options={})
       @bpm = options[:bpm] || 120
       @beats = (options[:b] || 1).to_f
+      @octave = options[:o].to_i + 3
       @adsr = options[:adsr] || 'default'
       @stream = []
     end
@@ -52,24 +53,23 @@ class Song
       puts "chord with #{notes}"
       triad =[]
       notes.each do |name|
-        if name.start_with? *NOTES
-          octave = name[name.length-1].to_i
-          note = octave > 0 ? name.chop : name
-          octave = 3 if octave == 0
-          triad << note_data(note, octave, options)
+        if name.to_s.start_with? *NOTES
+          note = name.to_s
+          triad << note_data(note, options)
         end
       end
       triad.transpose.map {|x| x.transpose.map {|y| y.reduce(:+)}}   
     end
 
-    def note_data(note, octave=3, options={})
+    def note_data(note, options={})
       stream = []
       if options
         beats  = options[:b].nil?  ? (@beats || 1) : options[:b].to_f
         volume = (options[:v].nil? ? 10 : options[:v].to_i) * 1000
+        octave = options[:o].nil? ? @octave : options[:o].to_i + 3
         adsr = options[:a].nil? ? @adsr : 'default'
       else
-        beats, volume, adsr = (@beats || 1), 10000, 'default'
+        beats, volume, octave, adsr = (@beats || 1), 10000, @octave, 'default'
       end
       puts "[#{note}] -> beats : #{beats}, :octave : #{octave}"
       duration = ((60 * Wav::SAMPLE_RATE * beats)/@bpm)/Wav::SAMPLE_RATE.to_f
@@ -95,16 +95,13 @@ class Song
     end
 
     def method_missing(name, *args, &block)
-      name = name.to_s
-      if name.start_with? *NOTES   
-        if name.split('_').length > 1
-          notes = name.split('_')
+      if name.to_s.start_with? *NOTES
+        note = name.to_s
+        if note.split('_').length > 1
+          notes = note.split('_')
           add_to_stream chord(notes, args[0])
         else
-          octave = name[name.length-1].to_i
-          note = octave > 0 ? name.chop : name
-          octave = 3 if octave == 0
-          add_to_stream note_data(note, octave, args[0])
+          add_to_stream note_data(note, args[0])
         end
       end
     end
