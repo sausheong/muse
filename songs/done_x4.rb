@@ -1,4 +1,5 @@
 require "#{File.dirname(__FILE__)}/../lib/muse"
+include Muse
 
 # "DONE x4" is the piece we play at the end of our daily standup :D
 
