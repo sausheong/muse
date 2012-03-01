@@ -1,4 +1,4 @@
-require '../muse'
+require "#{File.dirname(__FILE__)}/../lib/muse"
 
 # "Music Box Dancer" is an instrumental piece by Canadian musician 
 # Frank Mills that was an international hit in the late 1970s. It 
