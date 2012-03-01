@@ -1,4 +1,5 @@
-require '../muse'
+require "#{File.dirname(__FILE__)}/../lib/muse"
+include Muse
 
 # Mozart's Piano Sonata No. 11 3rd Movement (All Turca)
 # more popularly known as the 'Turkish March' or 'Turkish Rondo'
