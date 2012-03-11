@@ -83,7 +83,7 @@ There are 3 options you can use in a note.
 
 Use this keyboard as a reference when writing music.
 
-[Keyboard reference](/muse/keyboard-piano-notes.png)
+[Keyboard reference](/sausheong/muse/keyboard-piano-notes.png)
 
 ## Keeping time
 
@@ -125,7 +125,7 @@ For examples look into the songs folder. This is an example of the first 9 bars 
 
 Here's the original music score, public domain from the [Mutopia Project](http://www.mutopiaproject.org/cgibin/make-table.cgi?searchingfor=rondo+alla+turca).
 
-[First 9 bars of Alla Turca](/muse/turkish_march.png)
+[First 9 bars of Alla Turca](/sausheong/muse/turkish_march.png)
 
     require "muse"
     include Muse
