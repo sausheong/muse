@@ -4,7 +4,7 @@ Muse is a Ruby DSL for making music. Unlike MIDI, which is a specification for m
 
 WARNING: This is pre-alpha software where bugs abound and snap and gnash at every mistake you make. Use at your own risk!
 
-Just to push the point that this is pre-alpha software, I haven't created the Muse gem yet, and I don't have any version number for Muse yet either. I crunched this out amidst other work in bits and pieces in slightly over a week. If you are keen on music and Ruby, and would like to help out, I'm more than glad to accept more developers! Or musicians. Or both.
+If you are keen on music and Ruby, and would like to help out, I'm more than glad to accept more developers! Or musicians. Or both.
 
 ## The idea
 
@@ -16,13 +16,13 @@ Yes, I know the examples in my songs folder are all existing songs.
 
 ## Installing
 
-You need to install [bindata](http://bindata.rubyforge.org) first.
+To use Muse, install the gem.
 
-    gem install bindata
+    gem install muse
 
-To use Muse, download the files, write your songs in the songs folder with:
+Then write your songs, requiring the library in your song.
 
-    require '../muse'
+    require 'muse'
 
 ## Using Muse
 
@@ -81,6 +81,9 @@ There are 3 options you can use in a note.
 * volume - (v) This is how loud the note should be. The default is 10.
 * ADSR - (a) This indicates how the note should sound. The default ADSR is a cosine wave (check the code please).
 
+Use this keyboard as a reference when writing music.
+
+[Keyboard reference](keyboard-piano-notes.png)
 
 ## Keeping time
 
@@ -120,36 +123,42 @@ Which represents the C major, D7 and F minor chords accordingly. Chords, just li
 
 For examples look into the songs folder. This is an example of the first 9 bars of Alla Turca by Mozart.
 
-    require '../muse'
+Here's the original music score, public domain from the [Mutopia Project](http://www.mutopiaproject.org/cgibin/make-table.cgi?searchingfor=rondo+alla+turca).
+
+[First 9 bars of Alla Turca](turkish_march.png)
+
+    require "muse"
+    include Muse
 
     # Mozart's Piano Sonata No. 11 3rd Movement (All Turca)
     # more popularly known as the 'Turkish March' or 'Turkish Rondo'
     # first 9 bars only
 
     Song.record 'turkish_march' do
-      bar(1,b:0.25).notes   {b4; a4; gis3; a4;}
+      bar(1,b:0.25).notes   {b4; a4; gis4; a4;}
 
-      bar(2,b:0.25).notes   {c4 b:0.5; _ b:0.5; d4; c4; b4; c4;}
-      bar(2,b:0.5).notes    {a3; c3_e3; c3_e3; c3_e3;} 
+      bar(2,b:0.25).notes   {c5 b:0.5; _ b:0.5; d5; c5; b4; c5;}
+      bar(2,b:0.5).notes    {a3;       c4_e4;   c4_e4;  c4_e4;} 
 
-      bar(3,b:0.25).notes   {e4 b:0.5; _ b:0.5; f4; e4; dis4; e4;}
-      bar(3,b:0.5).notes    {a3; c3_e3; c3_e3; c3_e3;}  
+      bar(3,b:0.25).notes   {e5 b:0.5; _ b:0.5; f5; e5; dis5; e5;}
+      bar(3,b:0.5).notes    {a3;       c4_e4;   c4_e4;  c4_e4;} 
 
-      bar(4,b:0.25).notes   {b5; a5; gis4; a5; b5; a5; gis4; a5;}
-      bar(4,b:0.5).notes    {a3; c3_e3; a3; c3_e3;}  
-  
-      bar(5,b:0.5).notes    {c5 b:1; a5; c5;}
-      bar(5,b:0.5).notes    {a3; c3_e3; c3_e3; c3_e3;}  
-  
-      bar(6,b:0.5).notes    {b5; fis4_a4; e4_g4; fis4_a4; }
-      bar(6,b:0.5).notes    {a3; b3_e3; b3_e3; b3_e3;}  
-  
-      bar(7,b:0.5).notes    {b5; fis4_a4; e4_g4; fis4_a4; }
-      bar(7,b:0.5).notes    {a3; b3_e3; b3_e3; b3_e3;}    
-  
-      bar(8,b:0.5).notes    {b5; fis4_a4; e4_g4; dis4_eis4; }
-      bar(8,b:0.5).notes    {a3; b3_e3; b; b4;}  
-  
-      bar(9).notes          {e4}
-      bar(9).notes          {e3}  
+      bar(4,b:0.25).notes   {b5; a5; gis5; a5; b5; a5; gis5; a5;}
+      bar(4,b:0.5).notes    {a3;     c4_e4;    a3;     c4_e4;}  
+
+      bar(5,b:0.5).notes    {c6 b:1;            a5;     c6;}
+      bar(5,b:0.5).notes    {a3;       c4_e4;   c4_e4;  c4_e4;} 
+
+      bar(6,b:0.5).notes    {b5; fis5_a5; e5_g5; fis5_a5; }
+      bar(6,b:0.5).notes    {a3; b4_e4; b4_e4; b4_e4;}  
+
+      bar(7,b:0.5).notes    {b5; fis5_a5; e5_g5; fis5_a5; }
+      bar(7,b:0.5).notes    {a3; b4_e4; b4_e4; b4_e4;}  
+
+      bar(8,b:0.5).notes    {b5; fis5_a5; e5_g5; dis5_eis5; }
+      bar(8,b:0.5).notes    {a3; b4_e4; b2; b4;}  
+
+      bar(9).notes          {e5}
+      bar(9).notes          {e4}  
     end
+

@@ -1,5 +1,5 @@
-require "#{File.dirname(__FILE__)}/muse/wav"
-require "#{File.dirname(__FILE__)}/muse/config"
+require "muse/wav"
+require "muse/config"
 
 module Muse
   class Song
@@ -21,16 +21,16 @@ module Muse
       
       NOTES = %w(_ a ais b c cis d dis e f fis g gis)
       FREQUENCIES = {
-        :a2   => -24, :ais2 => -23, :b2   => -22,  :c2   => -21, :cis2 => -20, 
-        :d2   => -19, :dis2 => -18, :e2   => -17,  :f2   => -16, :fis2 => -15, 
-        :g2   => -14, :gis2 => -13, :a3   => -12,  :ais3 => -11, :b3   => -10, 
-        :c3   => -9,  :cis3 => -8,  :d3   => -7,   :dis3 => -6,  :e3   => -5,  
-        :f3   => -4,  :fis3 => -3,  :g3   => -2,   :gis3 => -1,  :a4   => 0,
-        :ais4 => 1,   :b4   => 2,   :c4   => 3,    :cis4 => 4,   :d4   => 5, 
-        :dis4 => 6,   :e4   => 7,   :f4   => 8,    :fis4 => 9,   :g4   => 10,   
-        :gis4 => 11,  :a5   => 12,  :ais5 => 13,   :b5   => 14,  :c5   => 15,
-        :cis5 => 16,  :d5   => 17,  :dis5 => 18,   :e5   => 19,  :f5   => 20,
-        :fis5 => 21,  :g5   => 22,  :gis5 => 23
+        :a2   => -24, :ais2 => -23, :b2   => -22,  :c3   => -21, :cis3 => -20, 
+        :d3   => -19, :dis3 => -18, :e3   => -17,  :f3   => -16, :fis3 => -15, 
+        :g3   => -14, :gis3 => -13, :a3   => -12,  :ais3 => -11, :b3   => -10, 
+        :c4   => -9,  :cis4 => -8,  :d4   => -7,   :dis4 => -6,  :e4   => -5,  
+        :f4   => -4,  :fis4 => -3,  :g4   => -2,   :gis4 => -1,  :a4   => 0,
+        :ais4 => 1,   :b4   => 2,   :c5   => 3,    :cis5 => 4,   :d5   => 5, 
+        :dis5 => 6,   :e5   => 7,   :f5   => 8,    :fis5 => 9,   :g5   => 10,   
+        :gis5 => 11,  :a5   => 12,  :ais5 => 13,   :b5   => 14,  :c6   => 15,
+        :cis6 => 16,  :d6   => 17,  :dis6 => 18,   :e6   => 19,  :f6   => 20,
+        :fis6 => 21,  :g6   => 22,  :gis6 => 23
       }
 
       def initialize(id, options={})
