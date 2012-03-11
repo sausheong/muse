@@ -150,15 +150,15 @@ Here's the original music score, public domain from the [Mutopia Project](http:/
       bar(5,b:0.5).notes    {a3;       c4_e4;   c4_e4;  c4_e4;} 
 
       bar(6,b:0.5).notes    {b5; fis5_a5; e5_g5; fis5_a5; }
-      bar(6,b:0.5).notes    {a3; b4_e4; b4_e4; b4_e4;}  
+      bar(6,b:0.5).notes    {e3; b4_e4; b4_e4; b4_e4;}  
 
       bar(7,b:0.5).notes    {b5; fis5_a5; e5_g5; fis5_a5; }
-      bar(7,b:0.5).notes    {a3; b4_e4; b4_e4; b4_e4;}  
+      bar(7,b:0.5).notes    {e3; b4_e4; b4_e4; b4_e4;}  
 
       bar(8,b:0.5).notes    {b5; fis5_a5; e5_g5; dis5_eis5; }
-      bar(8,b:0.5).notes    {a3; b4_e4; b2; b4;}  
+      bar(8,b:0.5).notes    {e3; b4_e4; b2; b4;}  
 
-      bar(9).notes          {e5}
+      bar(9).notes          {e4}
       bar(9).notes          {e4}  
     end
 
