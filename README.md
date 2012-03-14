@@ -6,14 +6,6 @@ WARNING: This is pre-alpha software where bugs abound and snap and gnash at ever
 
 If you are keen on music and Ruby, and would like to help out, I'm more than glad to accept more developers! Or musicians. Or both.
 
-## The idea
-
-While Muse can certainly be used to write (or recreate) songs from sheet music (you need to manually transcribe it though), it's probably more interesting and useful for dynamically generating songs.
-
-The idea I had in my head when I started writing Muse is to be able to slurp in data and convert it into music. For example, how would your tweets sound like? If you grab your tweet stream and convert (how you do it is up to you, a Muse score is just a Ruby script after all) it into a piece of music how would it sound like? Or your emails? Or your holiday pictures?
-
-Yes, I know the examples in my songs folder are all existing songs.
-
 ## Installing
 
 To use Muse, install the gem.
@@ -162,3 +154,6 @@ Here's the original music score, public domain from the [Mutopia Project](http:/
       bar(9).notes          {e4}  
     end
 
+## Speeding up Muse
+
+Muse from version 0.0.5 runs 4 parallel processes when generating the music file, using the [Parallel](https://github.com/grosser/parallel) library by Michael Grosser. This runs a whole lot faster than versions prior to 0.0.5
