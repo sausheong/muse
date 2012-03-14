@@ -1,4 +1,4 @@
-require "../lib/muse"
+require "muse"
 include Muse
 
 Song.record 'test_file' do
