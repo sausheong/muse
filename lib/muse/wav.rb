@@ -1,6 +1,7 @@
 require 'bindata'
 
 module Muse
+  
   class RiffChunk < BinData::Record
     int32be :chunk_id
     int32le :chunk_size
@@ -21,23 +22,26 @@ module Muse
   class DataChunk < BinData::Record
     int32be :chunk_id
     int32le :chunk_size  
+  end
+
+  class TempData < BinData::Record
     array :stream do
       int16le :left
       int16le :right
     end
   end
-
+  
   class WavFormat < BinData::Record
     riff_chunk   :riff_chunk
     format_chunk :format_chunk
     data_chunk   :data_chunk
   end
-
-  class Wav
+  
+  class WavHeader
     SAMPLE_RATE = 44100
     attr :wav, :file, :sample_rate, :format_chunk, :riff_chunk, :data_chunk
     
-    def initialize(filename)
+    def initialize(filename, stream_size)
       @sample_rate = SAMPLE_RATE
       @file = File.open(filename, "wb")
 
@@ -54,26 +58,18 @@ module Muse
       @format_chunk.sample_rate =  @sample_rate
       @format_chunk.byte_rate = @format_chunk.sample_rate * @format_chunk.num_channels * @format_chunk.bits_per_sample/2
       @format_chunk.block_align = @format_chunk.num_channels * @format_chunk.bits_per_sample/2
+      
       @data_chunk = DataChunk.new
       @data_chunk.chunk_id = "data".unpack("N").first
-    end
-
-    def write(stream_data)
-      stream_data.each_with_index do |s,i|
-        @data_chunk.stream[i].left = s[0]
-        @data_chunk.stream[i].right = s[1]
-      end
-      @data_chunk.chunk_size = stream_data.length * @format_chunk.num_channels * @format_chunk.bits_per_sample/8
+      @data_chunk.chunk_size = stream_size * @format_chunk.num_channels * @format_chunk.bits_per_sample/8
       @riff_chunk.chunk_size = 36 + @data_chunk.chunk_size
+      
       @wav = WavFormat.new
       @wav.riff_chunk = @riff_chunk
       @wav.format_chunk = @format_chunk
       @wav.data_chunk = @data_chunk
       @wav.write(@file)
-    end
 
-    def close
-      @file.close
     end
   end
 end

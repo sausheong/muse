@@ -1,17 +1,21 @@
-require "muse/wav"
-require "muse/config"
+require "parallel"
+require "#{File.dirname(__FILE__)}/muse/wav"
+require "#{File.dirname(__FILE__)}/muse/config"
 
 module Muse
   class Song
-    attr :wav_file, :bars
+    attr :name, :bars
 
     def self.record(name, &block)
+      start_time = Time.now
       puts "Start recording song named #{name}.wav"
-      @wav_file = Wav.new(name + ".wav")
+      @name = name
       @bars = {}
       puts "Processing ..."
       instance_eval &block
       save
+      end_time = Time.now
+      puts "Total time taken : #{((end_time - start_time)/60.0).round(3)} minutes"  
       puts "done."
     end
 
@@ -131,18 +135,40 @@ module Muse
       end
 
       def save
-        puts "Saving music file"
-        stream = []
-        @bars.each do |id, item|
+        puts "Creating temporary files in parallel ..."
+
+        results = Parallel.each_with_index(@bars.values, :in_processes => 4) do |item, id|
+          puts "Writing file - #{id}"
+          stream = []
           container = []
           item = right_size item
           item.each do |i|
             container << i.stream
           end
-          stream += container.transpose.map {|x| x.transpose.map {|y| y.reduce(:+)}}   
+          stream += container.transpose.map {|x| x.transpose.map {|y| y.reduce(:+)}}
+          temp = TempData.new
+          stream.each_with_index do |s,i|
+            temp.stream[i].left = s[0]
+            temp.stream[i].right = s[1]
+          end          
+          File.open("#{@name}-#{id}.tmp", "w") {|file| temp.write(file) }
+          puts "Completed file - #{id}"
         end
-        @wav_file.write(stream)
-        @wav_file.close
+
+        stream_size = results.inject(0) do |memo, bars|
+          memo + bars.first.stream.size
+        end
+
+        puts "Combining temporary files ..."
+        WavHeader.new("#{@name}.wav", stream_size)
+        tmpfiles = Dir.glob("#{@name}-*.tmp")
+        File.open("#{@name}.wav", "ab+") do |wav|
+          tmpfiles.each do |file|
+            File.open(file, "rb") { |tmp| File.copy_stream(tmp, wav) }
+            File.delete file
+          end
+        end
+        
       end
     end
   end
