@@ -92,14 +92,14 @@ module Muse
           beats, volume, adsr = (@beats || 1), 10000, 'default'
         end
         puts "[#{note}] -> beats : #{beats}, :octave : #{octave}"
-        duration = ((60 * Wav::SAMPLE_RATE * beats)/@bpm)/Wav::SAMPLE_RATE.to_f
+        duration = ((60 * WavHeader::SAMPLE_RATE * beats)/@bpm)/WavHeader::SAMPLE_RATE.to_f
         note_frequency = note + octave.to_s
         unless note == '_'
           freq = frequency_of(FREQUENCIES[note_frequency.to_sym])
         else
           freq = 0
         end      
-        (0.0..duration.to_f).step(1.0/Wav::SAMPLE_RATE) do |i|
+        (0.0..duration.to_f).step(1.0/WavHeader::SAMPLE_RATE) do |i|
           x = (Config.send(adsr.to_sym,i) * volume * Math.sin(2 * Math::PI * freq * i)).to_i
           stream << [x,x]
         end  
