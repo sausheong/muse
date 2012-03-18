@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Muse
-  VERSION = "0.0.5"
+  VERSION = "0.0.7"
 end

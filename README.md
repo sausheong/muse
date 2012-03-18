@@ -48,7 +48,7 @@ A bar is a collection of notes. You can set 3 options that will be kept througho
 
 * beat - (b) The time for each note in the bar
 * beats per minute - (bpm) The number of beats per minute. This determines how fast each beat is in actual time
-* ADSR - (adsr) How the note sounds.
+* envelope - (envelope) How the note sounds.
 
 You can group bars together in order to play them at the same time. For example.
 
@@ -71,7 +71,7 @@ There are 3 options you can use in a note.
 
 * beat - (b) This is the time for the note. The default is 1 if you don't specify, unless it's set at the bar level.
 * volume - (v) This is how loud the note should be. The default is 10.
-* ADSR - (a) This indicates how the note should sound. The default ADSR is a cosine wave (check the code please).
+* envelope - (a) This indicates how the note should sound. The default envelope is a cosine wave (check the code please).
 
 Use this keyboard as a reference when writing music.
 
@@ -110,6 +110,26 @@ You can also play chords. The convention for a chord is to start with an undersc
     _CM; _D7; _Fm;
     
 Which represents the C major, D7 and F minor chords accordingly. Chords, just like multiple notes, can have the same options as notes have.
+
+## Envelopes
+
+Envelopes defines the 'shape' of the sound. The sound wave when first generate is uniform. This means it will sound the same throughout the duration of the note. Applying an envelope creates the variation on how the note sounds. 
+
+Envelopes can be specified per note using the 'e' option, or per bar, also with the 'e' option or the entire song, with the 'envelope' option.
+
+The default envelope, if no envelope is specified, is a cosine wave. This means, the note will sound the loudest initially, then taper off towards the end of the note.
+
+A smoother envelope named 'sine' is also provided, which gives a smoother tone of the note as the note gradually becomes louder and is the loudest in the middle of the note, only to taper off at the end.
+
+To add more envelopes, you can extend the Envelope module and add in your own implementation. Please refer to the code.
+
+## Harmonics
+
+Sound is created by waves. The default sound for each note in Muse is a pure sine wave, called the fundamental harmonic. This has a very 'electronic' sound. To change how the note sounds like, you can change the harmonic being used. Each harmonic is created by adding additional 'harmonics' on top of the fundamental harmonic, changing the shape of the wave.
+
+Harmonics can be specified per note using the 'h' option, or per bar also with the 'he' option or the entire song, with the 'harmonic' option.
+
+The default harmonic, if none is specified, as mentioned, is a pure sine wave. You can add in your own harmonics to create different sound effects. Please refer to the code to see how this is done.
 
 ## Examples
 

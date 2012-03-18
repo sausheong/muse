@@ -15,17 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require "parallel"
-require "muse/wav"
-require "muse/config"
+require "#{File.dirname(__FILE__)}/muse/wav"
+require "#{File.dirname(__FILE__)}/muse/config"
 
 module Muse
   class Song
-    attr :name, :bars
 
-    def self.record(name, &block)
+    def self.record(name, options ={}, &block)
       start_time = Time.now
       puts "Start recording song named #{name}.wav"
       @name = name
+      @bpm = options[:bpm] || 120
+      @envelope = options[:envelope] || 'default'
+      @harmonic = options[:harmonic] || 'default'
       @bars = {}
       puts "Processing ..."
       instance_eval &block
@@ -36,7 +38,7 @@ module Muse
     end
 
     class Bar
-      attr :bpm, :beats, :adsr
+      attr :bpm, :beats, :envelope, :harmonic
       attr_accessor :stream
       
       NOTES = %w(_ a ais b c cis d dis e f fis g gis)
@@ -56,7 +58,8 @@ module Muse
       def initialize(id, options={})
         @bpm = options[:bpm] || 120
         @beats = (options[:b] || 1).to_f
-        @adsr = options[:adsr] || 'default'
+        @envelope = options[:envelope] || 'default'
+        @harmonic = options[:harmonic] || 'default'
         @stream = []
       end
 
@@ -86,21 +89,24 @@ module Muse
         stream = []
         if options
           beats  = options[:b].nil?  ? (@beats || 1) : options[:b].to_f
-          volume = (options[:v].nil? ? 10 : options[:v].to_i) * 1000
-          adsr = options[:a].nil? ? @adsr : 'default'
+          volume = (options[:v].nil? ? 5 : options[:v].to_i) * 1000
+          envelope = options[:a].nil? ? @envelope : 'default'
+          harmonic = options[:h].nil? ? @harmonic : 'default'
         else
-          beats, volume, adsr = (@beats || 1), 10000, 'default'
+          beats, volume, envelope, harmonic = (@beats || 1), 5000, @envelope || 'default', @harmonic || 'default'
         end
-        puts "[#{note}] -> beats : #{beats}, :octave : #{octave}"
-        duration = ((60 * Wav::SAMPLE_RATE * beats)/@bpm)/Wav::SAMPLE_RATE.to_f
+        puts "[#{note}] -> beats : #{beats}, octave : #{octave} bpm: #{bpm} envelope: #{envelope} harmonic : #{harmonic}"
+        duration = ((60 * WavHeader::SAMPLE_RATE * beats)/@bpm)/WavHeader::SAMPLE_RATE.to_f
         note_frequency = note + octave.to_s
         unless note == '_'
           freq = frequency_of(FREQUENCIES[note_frequency.to_sym])
         else
           freq = 0
         end      
-        (0.0..duration.to_f).step(1.0/Wav::SAMPLE_RATE) do |i|
-          x = (Config.send(adsr.to_sym,i) * volume * Math.sin(2 * Math::PI * freq * i)).to_i
+        (0.0..duration.to_f).step(1.0/WavHeader::SAMPLE_RATE) do |i|
+          env = Envelope.send(envelope.to_sym,i, duration)
+          har = Harmonic.send(harmonic.to_sym, freq * i)
+          x = (env * volume * har).to_i
           stream << [x,x]
         end  
         return stream           
@@ -137,6 +143,9 @@ module Muse
         unless @bars[id]
           @bars[id] = []
         end
+        options[:bpm] = @bpm || options[:bpm] || 120
+        options[:envelope] = @envelope || options[:envelope] || 'default'
+        options[:harmonic] = @harmonic || options[:harmonic] || 'default'
         @bars[id] << Bar.new(id, options)
         @bars[id].last
       end
@@ -153,7 +162,7 @@ module Muse
       def save
         puts "Creating temporary files in parallel ..."
 
-        results = Parallel.each_with_index(@bars.values, :in_processes => 4) do |item, id|
+        results = Parallel.each_with_index(@bars.values, :in_processes => Parallel.processor_count) do |item, id|
           puts "Writing file - #{id}"
           stream = []
           container = []
@@ -167,7 +176,7 @@ module Muse
             temp.stream[i].left = s[0]
             temp.stream[i].right = s[1]
           end          
-          File.open("#{@name}-#{id}.tmp", "w") {|file| temp.write(file) }
+          File.open("#{@name}-#{id.to_s.rjust(3,'0')}.tmp", "w") {|file| temp.write(file) }
           puts "Completed file - #{id}"
         end
 
@@ -177,7 +186,7 @@ module Muse
 
         puts "Combining temporary files ..."
         WavHeader.new("#{@name}.wav", stream_size)
-        tmpfiles = Dir.glob("#{@name}-*.tmp")
+        tmpfiles = Dir.glob("#{@name}-*.tmp").sort
         File.open("#{@name}.wav", "ab+") do |wav|
           tmpfiles.each do |file|
             File.open(file, "rb") { |tmp| File.copy_stream(tmp, wav) }
