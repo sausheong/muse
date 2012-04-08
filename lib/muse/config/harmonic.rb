@@ -17,30 +17,38 @@
 module Muse
   module Harmonic
     class << self
+      
+      def base(input)
+        2 * Math::PI * input
+      end
+      
       def default(input)
-        Math.sin(2 * Math::PI * input)
+        Math.sin(base(input))
       end
 
       def second(input)
-        Math.sin(2 * Math::PI * input) + 
-        Math.sin(3* 2 * Math::PI * input)
+        Math.sin(base(input))
+        Math.sin(base(input) * 3)
       end
 
       def third(input)
-        Math.sin(2 * Math::PI * input) + 
-        Math.sin(3* 2 * Math::PI * input) + 
-        Math.sin(5 * 2 * Math::PI * input)
+        Math.sin(base(input)) + 
+        Math.sin(base(input) * 3) + 
+        Math.sin(base(input) * 5)
       end
 
       def organ(input)
-        Math.sin(2 * 2 * Math::PI * input) + 
-        Math.sin(2 * Math::PI * input) + 
-        Math.sin(Math::PI * input)
-
+        Math.sin(base(input)) + 
+        Math.sin(base(input) * 2) + 
+        Math.sin(base(input) * 0.5)
       end
-      
 
-      
+      def guitar(input)
+        Math.sin(base(input) * 0.25) + 
+        Math.sin(base(input)) + 
+        Math.sin(base(input) * 2.75)
+        Math.sin(base(input) * 3) 
+      end
     end
   end
 end

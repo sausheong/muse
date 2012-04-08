@@ -43,6 +43,8 @@ module Muse
       
       NOTES = %w(_ a ais b c cis d dis e f fis g gis)
       FREQUENCIES = {
+        :ais1 => -34, :b1   => -33, :cis2 => -32,  :d2   => -31, :dis2 => -30,
+        :e2   => -29, :f2   => -28, :fis2 => -27,  :g2   => -26, :gis2 => -25,
         :a2   => -24, :ais2 => -23, :b2   => -22,  :c3   => -21, :cis3 => -20, 
         :d3   => -19, :dis3 => -18, :e3   => -17,  :f3   => -16, :fis3 => -15, 
         :g3   => -14, :gis3 => -13, :a3   => -12,  :ais3 => -11, :b3   => -10, 
@@ -58,8 +60,9 @@ module Muse
       def initialize(id, options={})
         @bpm = options[:bpm] || 120
         @beats = (options[:b] || 1).to_f
-        @envelope = options[:envelope] || 'default'
-        @harmonic = options[:harmonic] || 'default'
+        @envelope = options[:e] || 'default'
+        @harmonic = options[:h] || 'default'
+        @volume = options[:v] || 5
         @stream = []
       end
 
@@ -89,13 +92,13 @@ module Muse
         stream = []
         if options
           beats  = options[:b].nil?  ? (@beats || 1) : options[:b].to_f
-          volume = (options[:v].nil? ? 5 : options[:v].to_i) * 1000
+          volume = (options[:v].nil? ? (@volume.to_i || 5) : options[:v].to_i) * 1000
           envelope = options[:a].nil? ? @envelope : 'default'
           harmonic = options[:h].nil? ? @harmonic : 'default'
         else
           beats, volume, envelope, harmonic = (@beats || 1), 5000, @envelope || 'default', @harmonic || 'default'
         end
-        puts "[#{note}] -> beats : #{beats}, octave : #{octave} bpm: #{bpm} envelope: #{envelope} harmonic : #{harmonic}"
+        puts "[#{note}] -> beats : #{beats}, octave : #{octave} bpm: #{@bpm} envelope: #{envelope} harmonic : #{harmonic}"
         duration = ((60 * WavHeader::SAMPLE_RATE * beats)/@bpm)/WavHeader::SAMPLE_RATE.to_f
         note_frequency = note + octave.to_s
         unless note == '_'
@@ -143,9 +146,9 @@ module Muse
         unless @bars[id]
           @bars[id] = []
         end
-        options[:bpm] = @bpm || options[:bpm] || 120
-        options[:envelope] = @envelope || options[:envelope] || 'default'
-        options[:harmonic] = @harmonic || options[:harmonic] || 'default'
+        options[:bpm] = options[:bpm] || @bpm || 120
+        options[:envelope] = options[:envelope] || @envelope || 'default'
+        options[:harmonic] = options[:harmonic] || @harmonic || 'default'
         @bars[id] << Bar.new(id, options)
         @bars[id].last
       end
