@@ -4,80 +4,26 @@ include Muse
 Song.record 'hotel_california', harmonic: 'organ', bpm: 100  do
   
   # define the chords
-  def _Bm7(num)
-    bar(num,b:0.5).notes {b2; fis3 b:0.25; b3 b:0.25; d4; b3; fis4;fis3 b:1; _;}
-  end
-  def _Bm7_strum(num)
-    bar(num,b:0.33).notes {fis5; d5; b4; fis5; d5; b4; fis5; d5; b4; fis5 b:1; }
-  end
-  
-  def _Fism(num)
-    bar(num,b:0.5).notes {fis2; cis3 b:0.25; ais3 b:0.25; cis4; ais3; fis4; cis3 b:1;_;}
-  end
-  def _Fism_strum(num)
-    bar(num,b:0.33).notes {fis5; cis5; ais4; fis5; cis5; ais4; fis5 b:2}
-  end  
-  
-  def _AM(num)
-    bar(num,b:0.5).notes {a2; e3 b:0.25; a3 b:0.25; cis4; a3; e4;e3 b:1; _;}
-  end
-  def _AM_strum(num)
-    bar(num,b:0.33).notes {e5; cis5; a4; e5; cis5; a4; e5; cis5; a4; e5 b:1;}
-  end  
-  
-  def _EM9(num)
-    bar(num,b:0.5).notes {e2; b2 b:0.25; gis3 b:0.25; b3; gis3; e4; b2 b:1; _;}
-  end
-  def _EM9_strum(num)
-    bar(num,b:0.33).notes {e5; b4; gis4; e5; b4; gis4; e5 b:2;}
-  end  
-  
-  def _GM(num)
-    bar(num,b:0.5).notes {g2; d3 b:0.25; g3 b:0.25; b3; g3; d4; d3 b:1; _;}
-  end
-  def _GM_strum(num) 
-    bar(num,b:0.33).notes {d5; b4; g4; d5; b4; g4; d5; b4; g4; d5 b:1;}
-  end
-    
-  def _DM(num)
-    bar(num,b:0.5).notes {d3; fis3 b:0.25; a3 b:0.25; d4; a3; fis4; fis3 b:1; _;}
-  end
-  def _DM_strum(num)
-    bar(num,b:0.33).notes {fis5; d5; a4; fis5; d5; a4; fis5 b:2;}
-  end  
-  
-  def _Em7(num) 
-    bar(num,b:0.5).notes {e2; b2 b:0.25; g3 b:0.25; b3; g3; e4; b2 b:1; _;}
-  end
-  def _Em7_strum(num) 
-    bar(num,b:0.33).notes {e5; b4; g4; e5; b4; g4; e5; b4; g4; e5 b:1;}
-  end  
-  
-  def _FisM7(num)
-    bar(num,b:0.5).notes {fis2; cis3 b:0.25; ais3 b:0.25; cis4; ais3; fis4; cis3 b:1; _;} 
-  end
-  def _FisM7_strum(num)
-    bar(num,b:0.33).notes {fis5; cis5; ais4; fis5; cis5; ais4; fis5 b:2;}
-  end  
+  def _Bm7(num);  bar(num,b:0.5).notes {b2; fis3 b:0.25; b3 b:0.25; d4; b3; fis4;fis3 b:1; _;};  end  
+  def _Fism(num); bar(num,b:0.5).notes {fis2; cis3 b:0.25; ais3 b:0.25; cis4; ais3; fis4; cis3 b:1;_;}; end  
+  def _AM(num);   bar(num,b:0.5).notes {a2; e3 b:0.25; a3 b:0.25; cis4; a3; e4;e3 b:1; _;}; end  
+  def _EM9(num);  bar(num,b:0.5).notes {e2; b2 b:0.25; gis3 b:0.25; b3; gis3; e4; b2 b:1; _;}; end  
+  def _GM(num);   bar(num,b:0.5).notes {g2; d3 b:0.25; g3 b:0.25; b3; g3; d4; d3 b:1; _;};  end    
+  def _DM(num);   bar(num,b:0.5).notes {d3; fis3 b:0.25; a3 b:0.25; d4; a3; fis4; fis3 b:1; _;};  end
+  def _Em7(num);  bar(num,b:0.5).notes {e2; b2 b:0.25; g3 b:0.25; b3; g3; e4; b2 b:1; _;};  end
+  def _FisM7(num);bar(num,b:0.5).notes {fis2; cis3 b:0.25; ais3 b:0.25; cis4; ais3; fis4; cis3 b:1; _;};  end
   
   # intro riff
 
   _Bm7('0a')
-  
   _Fism('0b')
-  
-  _AM('0c')
-  
-  _EM9('0d')
-  
-  _GM('0e')
-  
-  _DM('0f')
-  
-  _Em7('0g')
-  
+  _AM('0c')  
+  _EM9('0d')  
+  _GM('0e')  
+  _DM('0f')  
+  _Em7('0g')  
   _FisM7('0h')
-
+  
   _Bm7(1)
   bar(1,b:1,h:'third').notes { d4 b:2; e4; fis4;}
   
@@ -238,28 +184,30 @@ Song.record 'hotel_california', harmonic: 'organ', bpm: 100  do
   bar(40,b:0.25).notes {_; fis3; ais3_cis4_fis4; fis4; fis4 b:0.5; e4; e4; ais3_cis4_fis4 b:2;}
   _FisM7(40)
   
+  
+  bar(41,b:0.33).notes {fis5; d5; b4; fis5; d5; b4; fis5; d5; b4; fis5 b:1; }
   _Bm7(41)
-  _Bm7_strum(41)
   
+  bar(42,b:0.33).notes {fis5; cis5; ais4; fis5; cis5; ais4; fis5 b:2}
   _Fism(42)
-  _Fism_strum(42)
   
+  bar(43,b:0.33).notes {e5; cis5; a4; e5; cis5; a4; e5; cis5; a4; e5 b:1;}  
   _AM(43)
-  _AM_strum(43)
   
+  bar(44,b:0.33).notes {e5; b4; gis4; e5; b4; gis4; e5 b:2;}
   _EM9(44)
-  _EM9_strum(44)
   
+  bar(45,b:0.33).notes {d5; b4; g4; d5; b4; g4; d5; b4; g4; d5 b:1;}
   _GM(45)
-  _GM_strum(45)
-  
+
+  bar(46,b:0.33).notes {fis5; d5; a4; fis5; d5; a4; fis5 b:2;}
   _DM(46)
-  _DM_strum(46)
-  
+
+  bar(47,b:0.33).notes {e5; b4; g4; e5; b4; g4; e5; b4; g4; e5 b:1;}
   _Em7(47)
-  _Em7_strum(47)
-  
+
+  bar(48,b:0.33).notes {fis5; cis5; ais4; fis5; cis5; ais4; fis5 b:2;}
   _FisM7(48)
-  _FisM7_strum(48)  
+
      
 end
