@@ -1,7 +1,7 @@
 require "muse"
 include Muse
 
-Song.record 'hotel_california', harmonic: 'organ', bpm: 100  do
+Song.record 'hotel_california', harmonic: 'guitar', bpm: 100  do
   
   # define the chords
   def _Bm7(num);  bar(num,b:0.5).notes {b2; fis3 b:0.25; b3 b:0.25; d4; b3; fis4;fis3 b:1; _;};  end  

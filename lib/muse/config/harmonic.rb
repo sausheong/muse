@@ -37,18 +37,12 @@ module Muse
         Math.sin(base(input) * 5)
       end
 
-      def organ(input)
+      def guitar(input)
         Math.sin(base(input)) + 
         Math.sin(base(input) * 2) + 
         Math.sin(base(input) * 0.5)
       end
 
-      def guitar(input)
-        Math.sin(base(input) * 0.25) + 
-        Math.sin(base(input)) + 
-        Math.sin(base(input) * 2.75)
-        Math.sin(base(input) * 3) 
-      end
     end
   end
 end

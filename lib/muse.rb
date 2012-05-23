@@ -17,8 +17,27 @@
 require "parallel"
 require "#{File.dirname(__FILE__)}/muse/wav"
 require "#{File.dirname(__FILE__)}/muse/config"
+require "#{File.dirname(__FILE__)}/muse/circularlist"
 
 module Muse
+  
+      
+  NOTES = %w(_ a ais b c cis d dis e f fis g gis)
+  FREQUENCIES = {
+    :ais1 => -34, :b1   => -33, :cis2 => -32,  :d2   => -31, :dis2 => -30,
+    :e2   => -29, :f2   => -28, :fis2 => -27,  :g2   => -26, :gis2 => -25,
+    :a2   => -24, :ais2 => -23, :b2   => -22,  :c3   => -21, :cis3 => -20, 
+    :d3   => -19, :dis3 => -18, :e3   => -17,  :f3   => -16, :fis3 => -15, 
+    :g3   => -14, :gis3 => -13, :a3   => -12,  :ais3 => -11, :b3   => -10, 
+    :c4   => -9,  :cis4 => -8,  :d4   => -7,   :dis4 => -6,  :e4   => -5,  
+    :f4   => -4,  :fis4 => -3,  :g4   => -2,   :gis4 => -1,  :a4   => 0,
+    :ais4 => 1,   :b4   => 2,   :c5   => 3,    :cis5 => 4,   :d5   => 5, 
+    :dis5 => 6,   :e5   => 7,   :f5   => 8,    :fis5 => 9,   :g5   => 10,   
+    :gis5 => 11,  :a5   => 12,  :ais5 => 13,   :b5   => 14,  :c6   => 15,
+    :cis6 => 16,  :d6   => 17,  :dis6 => 18,   :e6   => 19,  :f6   => 20,
+    :fis6 => 21,  :g6   => 22,  :gis6 => 23
+  }
+    
   class Song
 
     def self.record(name, options ={}, &block)
@@ -40,22 +59,7 @@ module Muse
     class Bar
       attr :bpm, :beats, :envelope, :harmonic
       attr_accessor :stream
-      
-      NOTES = %w(_ a ais b c cis d dis e f fis g gis)
-      FREQUENCIES = {
-        :ais1 => -34, :b1   => -33, :cis2 => -32,  :d2   => -31, :dis2 => -30,
-        :e2   => -29, :f2   => -28, :fis2 => -27,  :g2   => -26, :gis2 => -25,
-        :a2   => -24, :ais2 => -23, :b2   => -22,  :c3   => -21, :cis3 => -20, 
-        :d3   => -19, :dis3 => -18, :e3   => -17,  :f3   => -16, :fis3 => -15, 
-        :g3   => -14, :gis3 => -13, :a3   => -12,  :ais3 => -11, :b3   => -10, 
-        :c4   => -9,  :cis4 => -8,  :d4   => -7,   :dis4 => -6,  :e4   => -5,  
-        :f4   => -4,  :fis4 => -3,  :g4   => -2,   :gis4 => -1,  :a4   => 0,
-        :ais4 => 1,   :b4   => 2,   :c5   => 3,    :cis5 => 4,   :d5   => 5, 
-        :dis5 => 6,   :e5   => 7,   :f5   => 8,    :fis5 => 9,   :g5   => 10,   
-        :gis5 => 11,  :a5   => 12,  :ais5 => 13,   :b5   => 14,  :c6   => 15,
-        :cis6 => 16,  :d6   => 17,  :dis6 => 18,   :e6   => 19,  :f6   => 20,
-        :fis6 => 21,  :g6   => 22,  :gis6 => 23
-      }
+
 
       def initialize(id, options={})
         @bpm = options[:bpm] || 120
@@ -98,7 +102,7 @@ module Muse
         else
           beats, volume, envelope, harmonic = (@beats || 1), 5000, @envelope || 'default', @harmonic || 'default'
         end
-        puts "[#{note}] -> beats : #{beats}, octave : #{octave} bpm: #{@bpm} envelope: #{envelope} harmonic : #{harmonic}"
+        puts "[#{note}] -> b:#{beats}, o:#{octave}, e:#{envelope}, h:#{harmonic}"
         duration = ((60 * WavHeader::SAMPLE_RATE * beats)/@bpm)/WavHeader::SAMPLE_RATE.to_f
         note_frequency = note + octave.to_s
         unless note == '_'
@@ -142,7 +146,7 @@ module Muse
     private
     class << self
       def bar(id, options={})
-        puts "bar #{id}"
+        puts "bar #{id} - bpm:#{@bpm}"
         unless @bars[id]
           @bars[id] = []
         end
@@ -163,10 +167,10 @@ module Muse
       end
 
       def save
-        puts "Creating temporary files in parallel ..."
+        puts "\nCreating temporary files in parallel ..."
 
         results = Parallel.each_with_index(@bars.values, :in_processes => Parallel.processor_count) do |item, id|
-          puts "Writing file - #{id}"
+          puts "Writing file #{id}"
           stream = []
           container = []
           item = right_size item
@@ -180,14 +184,14 @@ module Muse
             temp.stream[i].right = s[1]
           end          
           File.open("#{@name}-#{id.to_s.rjust(3,'0')}.tmp", "w") {|file| temp.write(file) }
-          puts "Completed file - #{id}"
+          puts "file #{id} done."
         end
 
         stream_size = results.inject(0) do |memo, bars|
           memo + bars.first.stream.size
         end
 
-        puts "Combining temporary files ..."
+        print "\nCombining temporary files ..."
         WavHeader.new("#{@name}.wav", stream_size)
         tmpfiles = Dir.glob("#{@name}-*.tmp").sort
         File.open("#{@name}.wav", "ab+") do |wav|
@@ -196,7 +200,7 @@ module Muse
             File.delete file
           end
         end
-        
+        puts " done."
       end
     end
   end
