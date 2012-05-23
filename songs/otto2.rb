@@ -18,8 +18,6 @@
 
 require 'twitter'
 require 'rest-client'
-require './circularlist'
-# require './text'
 require 'muse'
 include Muse
 
