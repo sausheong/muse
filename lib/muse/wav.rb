@@ -85,7 +85,7 @@ module Muse
       @wav.format_chunk = @format_chunk
       @wav.data_chunk = @data_chunk
       @wav.write(@file)
-
+      @file.close
     end
   end
 end

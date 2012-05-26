@@ -50,8 +50,8 @@ end
 
 puts "== OTTO THE ALGORITHMIC COMPOSER =="
 # Using Twitter as the source for text          
-@text = Twitter.search("#reddot").last.text
-
+# @text = Twitter.search("english", :lang => "en").last.text
+@text = "Hello world this is a testing app"
 # Use RText as the source for text
 # text = RestClient.get "http://rtext.heroku.com/barsoom1"
 # 
