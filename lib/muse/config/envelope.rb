@@ -23,8 +23,13 @@ module Muse
       
       def sine(input, duration)
         Math.sin((Math::PI*input)/duration.to_f)
-      end  
-      
+      end
+
+      def tangent(input, duration)
+        Math.sin((Math::PI*input)/duration.to_f) / 
+          Math.cos((Math::PI*input)/(2*duration.to_f))
+      end
+
     end
   end
 end
