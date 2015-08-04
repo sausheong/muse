@@ -75,7 +75,7 @@ There are 3 options you can use in a note.
 
 Use this keyboard as a reference when writing music.
 
-![Keyboard reference](/sausheong/muse/raw/master/keyboard-piano-notes.png)
+![Keyboard reference](/keyboard-piano-notes.png?raw=true)
 
 ## Keeping time
 
