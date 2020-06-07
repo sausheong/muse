@@ -152,7 +152,7 @@ module Muse
         end
         options[:bpm] = options[:bpm] || @bpm || 120
         options[:envelope] = options[:envelope] || @envelope || 'default'
-        options[:harmonic] = options[:harmonic] || @harmonic || 'default'
+        options[:h] = options[:h] || @harmonic || 'default'
         @bars[id] << Bar.new(id, options)
         @bars[id].last
       end
